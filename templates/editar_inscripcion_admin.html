@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h2>✏️ Editar alumno (administrador)</h2>
+
+<!-- ✅ MENSAJE AQUÍ (ANTES DEL FORM) -->
+{% if mensaje %}
+    <div style="color:red; font-weight:bold; margin-bottom:10px;">
+        {{mensaje}}
+    </div>
+{% endif %}
+
+<form method="POST">
+
+    <label>Matrícula</label>
+    <input type="text" name="matricula" value="{{alumno[0]}}" required>
+
+    <label>Nombre</label>
+    <input type="text" name="nombre" value="{{alumno[1]}}" required>
+
+    <label>Carrera</label>
+    <input type="text" name="carrera" value="{{alumno[2]}}" required>
+
+    <label>Semestre</label>
+    <input type="text" name="semestre" value="{{alumno[3]}}" required>
+
+    <label>Género</label>
+    <select name="genero">
+        <option value="Hombre" {% if alumno[4]=='Hombre' %}selected{% endif %}>Hombre</option>
+        <option value="Mujer" {% if alumno[4]=='Mujer' %}selected{% endif %}>Mujer</option>
+    </select>
+
+    <label>Teléfono</label>
+    <input type="text" name="telefono" value="{{alumno[5]}}" required>
+
+    <label>Taller</label>
+    <select name="actividad">
+        {% for t in talleres %}
+            <option value="{{t[0]}}" {% if t[0]==alumno[6] %}selected{% endif %}>
+                {{t[0]}}
+            </option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+
+    <button class="btn btn-success">💾 Guardar cambios</button>
+
+</form>
+
+<br>
+
+<a href="/admin_alumnos">
+    <button class="btn btn-danger">⬅ Volver</button>
+</a>
+
+{% endblock %}

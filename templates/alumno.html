@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>🎓 Bienvenido {{nombre}}</h3>
+
+<p><b>Carrera:</b> {{carrera}}</p>
+<p><b>Periodo:</b> {{periodo}}</p>
+
+
+<!-- ✅ ESTADO DE INSCRIPCIONES -->
+{% if estado == "no_iniciado" %}
+
+    <p style="color:orange;">⏳ Las inscripciones aún no inician</p>
+
+{% elif estado == "cerrado" %}
+
+    <p style="color:red;">❌ Las inscripciones están cerradas</p>
+
+{% else %}
+
+    <!-- ✅ FORMULARIO SOLO SI ESTÁ ACTIVO -->
+    <form action="/registrar_taller" method="POST">
+
+        <!-- SEMESTRE -->
+        <label>Selecciona tu Semestre:</label>
+        <select name="semestre" required>
+            <option value="">Seleccione semestre</option>
+            {% for i in range(1,9) %}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <!-- GENERO -->
+        <label>Género:</label>
+        <select name="genero" required>
+            <option value="">Seleccione</option>
+            <option value="Hombre">Hombre</option>
+            <option value="Mujer">Mujer</option>
+        </select>
+
+        <br><br>
+
+        <!-- TELEFONO -->
+        <label>Numero de teléfono (WhatsApp para integrarte al grupo del taller):</label>
+        
+        <input type="text" name="telefono" placeholder="10 dígitos" required>
+
+        <br><br>
+
+        <!-- TALLER -->
+        <label>Selecciona un taller a cursar:</label>
+        <select name="actividad" required>
+            {% for t in talleres %}
+                <option>{{t[0]}}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <button>✅ Registrarse</button>
+
+    </form>
+
+{% endif %}
+
+<br>
+
+<a href="/logout">
+    <button>🚪 Salir</button>
+</a>
+
+{% endblock %}

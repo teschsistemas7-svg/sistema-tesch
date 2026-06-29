@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>📁 Cargar alumnos desde Excel</h3>
+
+<form method="POST" enctype="multipart/form-data">
+
+    <input type="file" name="archivo" required>
+
+    <br><br>
+
+    <button>📤 Cargar archivo</button>
+
+</form>
+
+
+<h3>Cargar inscripciones desde Excel</h3>
+
+<form method="POST" action="/cargar_inscripciones_excel" enctype="multipart/form-data">
+    <input type="file" name="archivo" required>
+    <button type="submit">📊 Cargar Excel</button>
+</form>
+
+<p>{{mensaje}}</p>
+
+
+<!-- MENSAJE DE RESULTADO -->
+{% if mensaje %}
+    <div style="margin-top:15px; padding:10px; border:1px solid #444;">
+        {{mensaje}}
+    </div>
+{% endif %}
+
+<br>
+
+<a href="/admin">
+    <button>⬅ Volver al panel</button>
+</a>
+
+{% endblock %}

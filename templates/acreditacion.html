@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>✅ Acreditación de alumnos</h3>
+
+
+
+
+
+
+{% if request.args.get('ok') %}
+<div style="background:#d4edda;color:#155724;padding:10px;border-radius:5px;">
+    ✅ Resultado guardado correctamente
+</div>
+<br>
+{% endif %}
+
+<div class="table-container">
+
+<table>
+
+<tr>
+    <th>Matrícula</th>
+    <th>Nombre</th>
+    <th>Carrera</th>
+    <th>Semestre</th>
+    <th>Actividad</th>
+    <th>Estado</th>
+    <th>Acción</th>
+</tr>
+
+{% if alumnos|length == 0 %}
+<tr>
+    <td colspan="7" style="text-align:center;">
+        No hay alumnos
+    </td>
+</tr>
+{% endif %}
+
+{% for a in alumnos %}
+<tr>
+
+<td>{{a[0]}}</td>
+<td>{{a[1]}}</td>
+<td>{{a[2]}}</td>
+<td>{{a[3]}}</td>
+<td>{{a[4]}}</td>
+
+<!-- ESTADO -->
+<td>
+    {% if a[5] == 'Acreditado' %}
+        <span style="background:#28a745;color:white;padding:5px;border-radius:6px;">
+            ✅ Acreditado
+        </span>
+    {% elif a[5] == 'No Acreditado' %}
+        <span style="background:#dc3545;color:white;padding:5px;border-radius:6px;">
+            ❌ No Acreditado
+        </span>
+    {% else %}
+        <span style="background:#6c757d;color:white;padding:5px;border-radius:6px;">
+            ⏳ Sin evaluar
+        </span>
+    {% endif %}
+</td>
+
+<!-- ✅ ACCIONES BONITAS -->
+<td>
+
+<div class="acciones">
+
+<form action="/guardar_resultado" method="POST">
+    <input type="hidden" name="matricula" value="{{a[0]}}">
+    <input type="hidden" name="actividad" value="{{a[4]}}">
+    <input type="hidden" name="periodo" value="{{periodo_seleccionado}}">
+
+    <button class="btn btn-success" type="submit" name="resultado" value="Acreditado">✅</button>
+    <button class="btn btn-danger" type="submit" name="resultado" value="No Acreditado">❌</button>
+</form>
+
+<a href="/evaluacion/{{loop.index0}}">
+    <button class="btn btn-primary" type="button">📝</button>
+</a>
+
+
+
+<a href="/eliminar_evaluacion/{{a[0]}}/{{a[4]|urlencode}}">
+    <button class="btn btn-dark" type="button">🗑</button>
+</a>
+
+</div>
+
+</td>
+
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+
+<br>
+
+<a href="/docente">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}

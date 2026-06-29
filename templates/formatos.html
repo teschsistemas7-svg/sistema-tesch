@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h2 style="text-align:center;">📂 FORMATOS GENERALES</h2>
+
+<br>
+
+<!-- ✅ SELECT DE TALLER -->
+{% if talleres|length > 1 %}
+
+<form method="POST" style="text-align:center;">
+    <label><b>Selecciona taller:</b></label>
+
+    <select name="taller" required>
+        <option value="">-- Seleccionar --</option>
+
+        {% for t in talleres %}
+        <option value="{{ t }}"
+            {% if t == taller_seleccionado %}selected{% endif %}>
+            {{ t }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <button>Trabajar</button>
+</form>
+
+<hr>
+
+{% else %}
+
+<h4 style="text-align:center;">📘 Taller: {{ talleres[0] }}</h4>
+
+{% endif %}
+
+<br>
+
+{% if taller_seleccionado %}
+
+<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:15px;">
+
+    <a href="/exportar_word/{{ taller_seleccionado|urlencode }}">
+        <button class="btn btn-primary" style="width:100%;">
+            📄 Formato 01<br>Lista de Alumnos
+        </button>
+    </a>
+
+    <a href="{{ url_for('exportar_informe', actividad=taller_seleccionado) }}">
+        <button class="btn btn-success" style="width:100%;">
+            📄 Formato 02<br>Informe Actividades
+        </button>
+    </a>
+
+    <a href="/exportar_resultados/{{ taller_seleccionado|urlencode }}">
+        <button class="btn btn-warning" style="width:100%;">
+            📄 Formato 03<br>Resultados
+        </button>
+    </a>
+
+    <a href="/exportar_todos_formato4/{{ taller_seleccionado|urlencode }}">
+        <button class="btn btn-dark" style="width:100%;">
+            📄 Formato 04<br>Evaluaciones
+        </button>
+    </a>
+
+    <a href="/exportar_constancias_todos/{{ taller_seleccionado|urlencode }}/01">
+        <button class="btn btn-success" style="width:100%;">
+            📄 Formato 05-01<br>Constancias TESCH
+        </button>
+    </a>
+
+    <a href="/exportar_constancias_todos/{{ taller_seleccionado|urlencode }}/02">
+        <button class="btn btn-primary" style="width:100%;">
+            📄 Formato 05-02<br>Constancias TecNM
+        </button>
+    </a>
+
+</div>
+
+{% else %}
+
+<p style="text-align:center; color:gray;">
+    ⚠ Selecciona un taller para generar los formatos.
+</p>
+
+{% endif %}
+
+<br><br>
+
+<div style="text-align:center;">
+    <a href="/docente">
+        <button class="btn btn-danger">⬅ Volver</button>
+    </a>
+</div>
+
+{% endblock %}

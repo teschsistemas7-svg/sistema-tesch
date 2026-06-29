@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>📅 Periodos escolares</h3>
+
+<a href="/nuevo_periodo">
+    <button>➕ Nuevo periodo</button>
+</a>
+
+<hr>
+
+{% for p in periodos %}
+
+    <div style="margin-bottom:10px; padding:10px; border:1px solid #ccc;">
+
+        <b>{{p[1]}}</b>
+
+        <br>
+
+        {% if p[2] == 1 %}
+            ✅ ACTIVO
+        {% else %}
+            
+<a href="/activar_periodo/{{p[1]}}">
+    <button>🔁 Activar</button>
+</a>
+
+        {% endif %}
+
+    </div>
+
+{% endfor %}
+
+<br>
+
+<a href="/admin">
+    <button>⬅ Volver al panel</button>
+</a>
+
+{% endblock %}

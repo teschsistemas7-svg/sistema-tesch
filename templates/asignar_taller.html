@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>👨‍🏫 Asignar docente a taller</h3>
+
+<form method="POST">
+
+    <label>Seleccionar docente:</label><br>
+
+    <select name="docente" required>
+        {% for d in docentes %}
+            <option value="{{d[0]}}">{{d[0]}}</option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+
+    <button>💾 Guardar</button>
+
+</form>
+
+<br>
+
+<a href="/admin_talleres">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}

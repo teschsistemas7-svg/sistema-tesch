@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>📋 Registrar evento</h3>
+
+<form method="POST" action="/registrar_evento">
+
+    <!-- ✅ ACTIVIDAD (CLAVE PARA TODO EL SISTEMA) -->
+    <label>Actividad / Taller:</label>
+    <input type="text" name="actividad" placeholder="Ej. Fútbol Varonil" required>
+
+    <label>Nombre del Evento:</label>
+    <input type="text" name="nombre_evento" required>
+
+    <label>Institución Organizadora:</label>
+    <input type="text" name="institucion" required>
+
+    <label>Fecha de Realización:</label>
+    <input type="date" name="fecha" required>
+
+    <label>No. de participantes:</label>
+    <input type="number" name="participantes" required>
+
+    <label>Mujeres:</label>
+    <input type="number" name="mujeres" required>
+
+    <label>Hombres:</label>
+    <input type="number" name="hombres" required>
+
+    <label>Resultados Obtenidos de la Actividad:</label>
+    <input type="text" name="resultados">
+
+    <br><br>
+
+    <button type="submit">💾 Guardar evento</button>
+
+</form>
+
+<br>
+
+<a href="/docente">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}

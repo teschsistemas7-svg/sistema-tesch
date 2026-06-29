@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h2>✏️ Editar alumno</h2>
+
+<form method="POST">
+
+    <label>Matrícula</label>
+    <input type="text" value="{{alumno[0]}}" disabled>
+
+    <label>Nombre</label>
+    <input type="text" name="nombre" value="{{alumno[1]}}" required>
+
+    <label>Carrera</label>
+<select name="carrera" required>
+    <option value="Ingeniería en Energías Renovables" {% if alumno[2]=='Ingeniería en Energías Renovables' %}selected{% endif %}>Ingeniería en Energías Renovables</option>
+    <option value="Ingeniería en Sistemas Computacionales" {% if alumno[2]=='Ingeniería en Sistemas Computacionales' %}selected{% endif %}>Ingeniería en Sistemas Computacionales</option>
+    <option value="Ingeniería en Desarrollo Comunitario" {% if alumno[2]=='Ingeniería en Desarrollo Comunitario' %}selected{% endif %}>Ingeniería en Desarrollo Comunitario</option>
+    <option value="Ingeniería en Gestión Empresarial" {% if alumno[2]=='Ingeniería en Gestión Empresarial' %}selected{% endif %}>Ingeniería en Gestión Empresarial</option>
+    <option value="Ingeniería en Semiconductores" {% if alumno[2]=='Ingeniería en Semiconductores' %}selected{% endif %}>Ingeniería en Semiconductores</option>
+</select>
+
+    
+<label>Semestre</label>
+<select name="semestre" required>
+    {% for i in range(1,9) %}
+        <option value="{{i}}" {% if alumno[3]|int == i %}selected{% endif %}>
+            {{i}}
+        </option>
+    {% endfor %}
+</select>
+
+
+    <label>Teléfono</label>
+    <input type="text" name="telefono" value="{{alumno[4]}}" required>
+
+    <label>Taller</label>
+    <input type="text" value="{{alumno[5]}}" disabled>
+
+    <br><br>
+
+    <button class="btn btn-success">💾 Guardar cambios</button>
+
+</form>
+
+<br>
+
+<a href="/docente">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}

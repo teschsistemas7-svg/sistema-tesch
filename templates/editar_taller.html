@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>✏️ Editar taller</h3>
+
+<form method="POST">
+
+    <p><b>ID:</b> {{taller[0]}}</p>
+
+    <label>Nombre:</label><br>
+    <input type="text" name="nombre" value="{{taller[1]}}" required>
+
+    <br><br>
+
+    <button>💾 Guardar cambios</button>
+
+</form>
+
+{% if mensaje %}
+    <div style="margin-top:10px;">
+        {{mensaje}}
+    </div>
+{% endif %}
+
+<br>
+
+
+<a href="/admin_talleres">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}

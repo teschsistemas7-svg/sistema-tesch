@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>🎓 Gestión de alumnos</h3>
+
+<!-- BUSCADOR -->
+<form method="POST">
+    <input type="text" name="busqueda" placeholder="Buscar por matrícula o nombre" required>
+    <button>🔍 Buscar</button>
+</form>
+
+<hr>
+
+<!-- RESULTADOS -->
+{% if alumnos and alumnos|length > 0 %}
+
+    {% for a in alumnos %}
+        <div style="margin-bottom:15px; padding:12px; border:1px solid #ccc; border-radius:8px;">
+
+            <b>Nombre:</b> {{ a[1] }} <br>
+            <b>Carrera:</b> {{ a[2] }} <br>
+            <b>Matrícula:</b> {{ a[0] }}
+
+            <br><br>
+
+            <div class="acciones">
+
+                <!-- ✅ EDITAR COMPLETO -->
+                <a href="/editar_inscripcion_admin/{{ a[0] }}">
+                    <button class="btn btn-warning">✏️ Editar completo</button>
+                </a>
+
+                <!-- ✅ EDITAR CONTRASEÑA -->
+                <a href="/editar_alumno/{{ a[0] }}">
+                    <button class="btn btn-primary">🔐 Contraseña</button>
+                </a>
+
+                <!-- ✅ ELIMINAR INSCRIPCIÓN -->
+                <a href="/admin_eliminar_inscripcion/{{ a[0] }}"
+                   onclick="return confirm('¿Eliminar inscripción del periodo actual?')">
+                    ❌ Eliminar inscripción
+                </a>
+
+            </div>
+
+        </div>
+    {% endfor %}
+
+{% else %}
+    <p>🔎 No hay resultados. Realiza una búsqueda.</p>
+{% endif %}
+
+<br>
+
+<a href="/admin">
+    <button>⬅ Volver al panel</button>
+</a>
+
+{% endblock %}

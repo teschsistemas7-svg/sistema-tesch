@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>✏️ Editar evento</h3>
+
+<form method="POST">
+
+    <label>Evento:</label>
+    <input type="text" name="nombre_evento" value="{{evento[3]}}" required>
+
+    <label>Institución:</label>
+    <input type="text" name="institucion" value="{{evento[4]}}" required>
+
+    <label>Fecha:</label>
+    <input type="date" name="fecha" value="{{evento[5]}" required>
+
+    <label>Total:</label>
+    <input type="number" name="participantes" value="{{evento[6]}}" required>
+
+    <label>Mujeres:</label>
+    <input type="number" name="mujeres" value="{{evento[7]}}" required>
+
+    <label>Hombres:</label>
+    <input type="number" name="hombres" value="{{evento[8]}}" required>
+
+    <label>Resultados:</label>
+    <input type="text" name="resultados" value="{{evento[9]}}">
+
+    <br><br>
+
+    <button>💾 Guardar cambios</button>
+
+</form>
+
+<br>
+
+<a href="/eventos_docente">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}
+``

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>➕ Nuevo periodo</h3>
+
+<form method="POST">
+
+    <input type="text" name="periodo" placeholder="Ej. 2027-1" required>
+
+    <br><br>
+
+    <button>💾 Guardar</button>
+
+</form>
+
+<br>
+
+
+<a href="/admin_periodos">
+    <button>⬅ Volver</button>
+</a>
+
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>✏️ Editar docente</h3>
+
+<p><b>Usuario:</b> {{usuario}}</p>
+
+<form method="POST">
+
+    <label>Nueva contraseña:</label><br>
+    <input type="password" name="password" required>
+
+    <br><br>
+
+    <button>💾 Guardar</button>
+
+</form>
+
+<br>
+
+<a href="/ver_docentes">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}

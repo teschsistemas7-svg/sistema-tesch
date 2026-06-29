@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 11px;
+    }
+
+    th, td {
+        border: 1px solid #555;
+        text-align: center;
+        padding: 3px;
+    }
+
+    thead th {
+        background-color: #8B0000;
+        color: white;
+    }
+
+    .rotar {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        font-size: 10px;
+        height: 120px;
+    }
+
+    .fila-par {
+        background-color: #f2f2f2;
+    }
+
+    .info {
+        margin-bottom: 10px;
+    }
+
+    .btn-print {
+        background-color: #8B0000;
+        color: white;
+        padding: 8px;
+        border: none;
+        cursor: pointer;
+    }
+
+    @media print {
+        button {
+            display: none;
+        }
+    }
+</style>
+
+<h2>📋 Lista de asistencia</h2>
+
+<div class="info">
+    <b>Docente:</b> {{docente}}<br>
+    <b>Actividad:</b> {{actividad}}<br>
+    <b>Periodo:</b> {{periodo}}<br>
+    <b>Parcial:</b> ______ (1°, 2° o 3°)
+</div>
+
+<button class="btn-print" onclick="window.print()">🖨 Imprimir</button>
+
+<br><br>
+
+<table>
+
+    <!-- ✅ ENCABEZADO -->
+    <thead>
+        <tr>
+            <th rowspan="2">No</th>
+            <th rowspan="2">Matrícula</th>
+            <th rowspan="2">Nombre</th>
+            <th rowspan="2">Carrera</th>
+            <th rowspan="2">Sem</th>
+
+            <!-- ✅ DÍAS DINÁMICOS -->
+            {% for semana in range(16) %}
+                {% for d in dias %}
+                    <th class="rotar">{{ d }}</th>
+                {% endfor %}
+            {% endfor %}
+        </tr>
+
+        <!-- ✅ SEMANAS -->
+        <tr>
+            {% for semana in range(16) %}
+                {% for d in dias %}
+                    <th>S{{ semana + 1 }}</th>
+                {% endfor %}
+            {% endfor %}
+        </tr>
+    </thead>
+
+    <!-- ✅ CUERPO -->
+    <tbody>
+        {% for a in alumnos %}
+        <tr class="{{ 'fila-par' if loop.index % 2 == 0 }}">
+            <td>{{loop.index}}</td>
+            <td>{{a[0]}}</td>
+            <td style="text-align:left;">{{a[1]}}</td>
+
+            <!-- ✅ abreviar carrera -->
+            <td>
+                {% if "Sistemas" in a[2] %}ISC
+                {% elif "Energías" in a[2] %}IER
+                {% elif "Desarrollo" in a[2] %}IDC
+                {% elif "Gestión" in a[2] %}IGE
+                {% elif "Semiconductores" in a[2] %}IS
+                {% else %}{{a[2]}}
+                {% endif %}
+            </td>
+
+            <td>{{a[3]}}</td>
+
+            <!-- ✅ COLUMNAS DINÁMICAS -->
+            {% for semana in range(16) %}
+                {% for d in dias %}
+                    <td></td>
+                {% endfor %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+<br><br>
+
+<p><b>Firma del docente:</b> __________________________</p>
+
+{% endblock %}

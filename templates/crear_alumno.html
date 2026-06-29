@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>➕ Crear alumno</h3>
+
+<form method="POST">
+
+    <label>Matrícula:</label><br>
+    <input type="text" name="matricula" required><br><br>
+
+    <label>Nombre:</label><br>
+    <input type="text" name="nombre" required><br><br>
+
+    <label>Carrera:</label><br>
+    <select name="carrera" required style="width:300px; padding:5px;">
+        <option value="">-- Seleccionar carrera --</option>
+
+        <option value="Ingeniería en Desarrollo Comunitario">
+            Ingeniería en Desarrollo Comunitario
+        </option>
+
+        <option value="Ingeniería en Gestión Empresarial">
+            Ingeniería en Gestión Empresarial
+        </option>
+
+        <option value="Ingeniería en Sistemas Computacionales">
+            Ingeniería en Sistemas Computacionales
+        </option>
+
+        <option value="Ingeniería en Energías Renovables">
+            Ingeniería en Energías Renovables
+        </option>
+
+        <option value="Ingeniería en Semiconductores">
+            Ingeniería en Semiconductores
+        </option>
+    </select><br><br>
+
+    <button style="background:#28a745; color:white;">Guardar</button>
+
+</form>
+
+<br>
+
+<p style="color:red;">{{ mensaje }}</p>
+
+<a href="/admin_alumnos">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}

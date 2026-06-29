@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h2>👨‍🏫 Panel docente</h2>
+
+<p><b>Usuario:</b> {{usuario}}</p>
+
+<!-- ✅ PERIODO (CORREGIDO Y CLARO) -->
+<div style="background:#e9ecef; padding:12px; border-radius:5px; margin-bottom:15px;">
+    <b>Periodo activo:</b> {{ periodo_seleccionado if periodo_seleccionado else 'No definido' }}
+</div>
+
+<hr>
+
+<!-- ✅ 1. SELECCIONAR TALLER -->
+{% if talleres|length > 1 %}
+
+<form method="POST">
+    <label><b>Selecciona taller:</b></label>
+
+    <select name="taller" required style="width:300px; padding:5px;">
+        <option value="">-- Seleccionar --</option>
+
+        {% for t in talleres %}
+        <option value="{{ t }}"
+            {% if t == taller_seleccionado %}selected{% endif %}>
+            {{ t }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <button style="margin-left:10px;">Ver</button>
+</form>
+
+<hr>
+
+{% else %}
+<h4>📘 Taller: {{ talleres[0] }}</h4>
+<hr>
+{% endif %}
+
+<!-- ✅ 2. SELECCIONAR DIAS -->
+{% if taller_seleccionado %}
+
+<form method="GET">
+
+    <input type="hidden" name="taller" value="{{ taller_seleccionado }}">
+
+    <label><b>Selecciona días de clase:</b></label><br><br>
+
+    <label><input type="checkbox" name="dias" value="Lunes"> Lunes</label><br>
+    <label><input type="checkbox" name="dias" value="Martes"> Martes</label><br>
+    <label><input type="checkbox" name="dias" value="Miercoles"> Miércoles</label><br>
+    <label><input type="checkbox" name="dias" value="Jueves"> Jueves</label><br>
+    <label><input type="checkbox" name="dias" value="Viernes"> Viernes</label><br>
+
+    <br>
+
+    <!-- ✅ 3. BOTONES -->
+    <button formaction="/exportar_asistencia_excel" class="btn btn-success">
+        📊 Generar Excel
+    </button>
+
+    <button formaction="/lista_asistencia" class="btn btn-info">
+        📋 Ver lista de asistencia
+    </button>
+
+</form>
+
+<hr>
+
+{% endif %}
+
+<!-- ✅ BOTONES GENERALES ABAJO -->
+<div style="margin-top:15px;">
+
+    <a href="/eventos_docente">
+        <button>📋 Registrar o ver eventos</button>
+    </a>
+
+    {% if taller_seleccionado %}
+    <a href="/acreditacion?taller={{ taller_seleccionado|urlencode }}">
+        <button>✅ Acreditar alumnos</button>
+    </a>
+    {% else %}
+    <button disabled>✅ Acreditar alumnos</button>
+    {% endif %}
+
+    <a href="/formatos">
+        <button class="btn btn-purple">📂 Ver formatos</button>
+    </a>
+
+</div>
+
+<hr>
+
+<!-- ✅ 5. TABLA -->
+<h4>📋 Alumnos del taller</h4>
+
+<p><b>Total de alumnos:</b> {{ alumnos|length }}</p>
+
+<div class="table-container">
+<table>
+    <thead>
+        <tr>
+            <th>Matrícula</th>
+            <th>Nombre</th>
+            <th>Carrera</th>
+            <th>Género</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for a in alumnos %}
+        <tr>
+            <td>{{a[0]}}</td>
+            <td>{{a[1]}}</td>
+            <td>{{a[2]}}</td>
+            <td>{{a[3] if a[3] else '-'}}</td>
+            <td>{{a[4] if a[4] else '-'}}</td>
+
+            <td>
+                <a href="/editar_alumno_docente/{{a[0]}}">
+                    <button class="btn btn-warning">✏️ Editar</button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<br><br>
+
+<a href="/logout">
+    <button>🚪 Salir</button>
+</a>
+
+{% endblock %}

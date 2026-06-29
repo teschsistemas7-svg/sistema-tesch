@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>🏀 Talleres registrados</h3>
+
+<!-- BOTÓN NUEVO -->
+<a href="/nuevo_taller">
+    <button>➕ Nuevo Taller</button>
+</a>
+
+<hr>
+
+<table border="1" style="width:100%;">
+
+    <tr>
+        <th>ID</th>
+        <th>Taller</th>
+        <th>Docente</th>
+        <th>Acciones</th>
+    </tr>
+
+    {% for t in talleres %}
+    <tr>
+
+        <td>{{t[0]}}</td>
+        <td>{{t[1]}}</td>
+
+        <!-- ✅ MOSTRAR DOCENTE -->
+        <td>
+            {% if t[2] %}
+                {{t[2]}}
+            {% else %}
+                <span style="color:red;">Sin asignar</span>
+            {% endif %}
+        </td>
+
+        <td>
+
+            <!-- EDITAR -->
+            <a href="/editar_taller/{{t[0]}}">
+                <button>✏️ Editar</button>
+            </a>
+
+            <!-- ELIMINAR -->
+            <a href="/eliminar_taller/{{t[0]}}"
+               onclick="return confirm('¿Seguro que deseas eliminar este taller?')">
+                <button style="background:red; color:white;">❌ Eliminar</button>
+            </a>
+
+            <!-- ✅ ASIGNAR DOCENTE -->
+            <a href="/asignar_taller/{{t[0]}}">
+                <button>👨‍🏫 Asignar docente</button>
+            </a>
+
+        </td>
+
+    </tr>
+    {% endfor %}
+
+</table>
+
+<br>
+
+<!-- VOLVER -->
+<a href="/admin">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}

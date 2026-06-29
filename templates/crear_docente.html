@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>👨‍🏫 Crear docente</h3>
+
+<form method="POST">
+
+    <label>Usuario:</label><br>
+    <input type="text" name="usuario" required>
+
+    <br><br>
+
+    <label>Contraseña:</label><br>
+    <input type="password" name="password" required>
+
+    <br><br>
+
+    <button>💾 Crear docente</button>
+
+</form>
+
+{% if mensaje %}
+    <div style="margin-top:10px;">
+        {{mensaje}}
+    </div>
+{% endif %}
+
+<br>
+
+<a href="/admin">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}

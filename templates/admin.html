@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>⚙️ Panel Administrador</h3>
+
+<p>Bienvenido al sistema TESCH</p>
+
+<hr>
+
+<div style="display:flex; flex-direction:column; gap:10px;">
+
+    
+<a href="/dashboard">
+    <button>📊 Panel General</button>
+</a>
+
+
+    <a href="/perfil_admin">
+        <button>👤 Editar perfil administrador</button>
+    </a>
+
+    
+    <a href="/fecha_apertura">
+    <button>📅 Configurar fechas de inscripción</button>
+    </a>
+
+    
+    <a href="/editar_fechas">
+    <button>🛠 Editar fechas de inscripción</button>
+    </a>
+
+    
+    <a href="/crear_docente">
+    <button>👨‍🏫 Crear docente (usuario y contraseña)</button>
+    </a>
+
+    <a href="/ver_docentes">
+    <button>👨‍🏫 Editar contraseña de docentes o eliminar </button>
+    </a>
+
+    
+    <a href="/admin_talleres">
+        <button>🏀 Gestionar talleres</button>
+    </a>
+
+    <a href="/admin_periodos">
+        <button>📅 Gestionar periodos escolares</button>
+    </a>
+    <a href="/crear_alumno">
+    <button style="background:#28a745; color:white; padding:8px;">
+        ➕ Registrar estudiante
+    </button>
+</a>
+
+    <a href="/admin_alumnos">
+        <button>🎓 Gestionar estudiante</button>
+    </a>
+
+        
+<a href="/historial_admin">    
+<button>📚 Historial de alumnos</button>
+</a>
+
+
+
+<a href="/reportes">
+    <button>📊 Ver reportes</button>
+</a>
+
+
+
+    <a href="/cargar_excel">
+        <button>📁 Cargar Excel alumnos</button>
+    </a>
+
+    
+<a href="/limpiar_datos">
+    <button class="btn btn-danger"
+        onclick="return confirm('¿Seguro que deseas borrar TODOS los datos?')">
+        🗑 Limpiar base de datos
+    </button>
+</a>
+
+
+</div>
+
+<br><br>
+
+<a href="/logout">
+    <button style="background:#333;">Cerrar sesión</button>
+</a>
+
+{% endblock %}

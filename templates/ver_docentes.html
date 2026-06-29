@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>👨‍🏫 Lista de docentes</h3>
+
+<table border="1">
+    <tr>
+        <th>Usuario</th>
+        <th>Acciones</th>
+    </tr>
+
+    {% for d in docentes %}
+    <tr>
+        <td>{{d[0]}}</td>
+        <td>
+
+            <a href="/editar_docente/{{d[0]}}">
+                <button>✏️ Editar</button>
+            </a>
+
+            <a href="/eliminar_docente/{{d[0]}}"
+               onclick="return confirm('¿Eliminar docente?')">
+                <button style="background:red;">❌ Eliminar</button>
+            </a>
+
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+
+<a href="/admin">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}

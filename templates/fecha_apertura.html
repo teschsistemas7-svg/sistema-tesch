@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>📅 Configurar apertura de inscripciones</h3>
+
+<form method="POST">
+
+    <label>Fecha de inicio:</label><br>
+    <input type="date" name="inicio" required>
+
+    <br><br>
+
+    <label>Fecha de cierre:</label><br>
+    <input type="date" name="fin" required>
+
+    <br><br>
+
+    <button>💾 Guardar configuración</button>
+
+</form>
+
+{% if mensaje %}
+    <div style="margin-top:15px; padding:10px; border:1px solid #ccc;">
+        {{mensaje}}
+    </div>
+{% endif %}
+
+<br>
+
+<a href="/admin">
+    <button>⬅ Volver al panel</button>
+</a>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>➕ Nuevo Taller</h3>
+
+<form method="POST">
+
+    <input type="text" name="nombre" placeholder="Ej. Futbol, Danza" required>
+
+    <br><br>
+
+    <button>💾 Guardar</button>
+
+</form>
+
+<!-- MENSAJE -->
+{% if mensaje %}
+    <div style="margin-top:15px; padding:10px; border:1px solid #ccc;">
+        {{mensaje}}
+    </div>
+{% endif %}
+
+<br>
+
+<a href="/admin_talleres">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}

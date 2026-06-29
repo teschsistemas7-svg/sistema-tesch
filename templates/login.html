@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>🔐 Iniciar sesión</h3>
+
+<!-- ✅ ESTADO DE INSCRIPCIONES -->
+{% if estado == "activo" %}
+    <div style="color:green; margin-bottom:15px;">
+        ✅ Inscripciones abiertas<br>
+        ⏱️ Tiempo restante: {{ restante }}
+    </div>
+
+{% elif estado == "no_iniciado" %}
+    <div style="color:orange; margin-bottom:15px;">
+        ⏳ Inscripciones aún no inician
+    </div>
+
+{% elif estado == "cerrado" %}
+    <div style="color:red; margin-bottom:15px;">
+        ❌ Inscripciones cerradas
+    </div>
+{% endif %}
+
+<hr>
+
+<!-- ✅ FORMULARIO LOGIN -->
+<form method="POST">
+
+    <label>Usuario:</label><br>
+    <input type="text" name="usuario" required>
+
+    <br><br>
+
+    <label>Contraseña:</label><br>
+    <input type="password" name="password" required>
+
+    <br><br>
+
+    <button>Ingresar</button>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>✏️ Editar alumno</h3>
+
+<form method="POST">
+
+    <p><b>Matrícula:</b> {{alumno[0]}}</p>
+
+    <label>Nombre:</label><br>
+    <input type="text" name="nombre" value="{{alumno[1]}}" required>
+
+    <br><br>
+
+    <label>Carrera:</label><br>
+    <input type="text" name="carrera" value="{{alumno[2]}}" required>
+
+    <br><br>
+
+    <label>Nueva contraseña:</label><br>
+    <input type="password" name="password" placeholder="Opcional">
+
+    <br><br>
+
+    <button>💾 Guardar cambios</button>
+
+</form>
+
+<br>
+
+<a href="/admin_alumnos">
+    <button>⬅ Volver a alumnos</button>
+</a>
+
+{% endblock %}

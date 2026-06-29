@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>{{ titulo }}</title>
+
+<style>
+
+/* ======== GENERAL ======== */
+body {
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#f4f6f9;
+}
+
+/* ======== HEADER ======== */
+header {
+    background:#800000;
+    color:white;
+    padding:15px;
+    text-align:center;
+}
+
+header h1 { margin:0; font-size:20px; }
+header h2, header h3 { margin:2px; font-weight:normal; }
+
+/* ======== CONTENEDOR ======== */
+.container {
+    width:90%;
+    max-width:1200px;
+    margin:40px auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0px 4px 12px rgba(0,0,0,0.2);
+}
+
+/* ======== INPUTS ======== */
+input, select, textarea {
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+/* ======== BOTONES GENERALES ======== */
+button {
+    padding:8px 14px;
+    background:#800000;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    transition:0.2s ease;
+}
+
+button:hover {
+    background:#a00000;
+    transform: scale(1.05);
+}
+
+/* ✅ BOTONES PRO */
+.btn {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    min-width: 40px;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+/* COLORES */
+.btn-success { background:#28a745; color:white; }
+.btn-danger { background:#dc3545; color:white; }
+.btn-primary { background:#007bff; color:white; }
+.btn-purple { background:#6f42c1; color:white; }
+.btn-dark { background:#343a40; color:white; }
+
+/* CONTENEDOR DE BOTONES */
+.acciones {
+    display:flex;
+    gap:5px;
+    flex-wrap:wrap;
+}
+
+/* ======== TABLAS ======== */
+.table-container {
+    width:100%;
+    overflow-x:auto;
+}
+
+table {
+    width:100%;
+    border-collapse: collapse;
+    background:white;
+}
+
+th, td {
+    padding:10px;
+    border:1px solid #ccc;
+    text-align:left;
+    word-wrap:break-word;
+    max-width:200px;
+}
+
+/* Encabezado */
+th {
+    background:#800000;
+    color:white;
+}
+
+/* Filas alternas */
+tbody tr:nth-child(even) {
+    background-color:#f2f2f2;
+}
+
+/* ======== LINKS ======== */
+a {
+    text-decoration:none;
+}
+
+/* ======== FOOTER ======== */
+.footer {
+    text-align:center;
+    margin-top:20px;
+    color:gray;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<header style="
+    position:relative;
+    background:#800000;
+    color:white;
+    padding:18px;
+    text-align:center;
+">
+
+    <!-- LOGO IZQUIERDO -->
+    <img src="{{ url_for('static', filename='img/logo1.png') }}"
+         style="
+            position:absolute;
+            left:50px;
+            top:45%;
+            transform:translateY(-50%);
+            height:200px;
+         ">
+
+    <!-- LOGO DERECHO -->
+    <img src="{{ url_for('static', filename='img/logo2.png') }}"
+         style="
+            position:absolute;
+            right:50px;
+            top:50%;
+            transform:translateY(-50%);
+            height:80px;
+         ">
+
+    <h1>Tecnológico de Estudios Superiores de Chicoloapan</h1>
+    <h2>Departamento de Vinculación</h2>
+    <h3>Talleres Deportivos y Culturales</h3>
+
+</header>
+
+
+
+<div class="container">
+    {% block contenido %}{% endblock %}
+</div>
+
+<div class="footer">
+Sistema Creado por el Departamento de Vinculación 
+Ing. Jovany Carbajal Muñoz © 2026
+</div>
+
+</body>
+</html>

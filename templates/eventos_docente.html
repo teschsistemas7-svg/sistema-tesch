@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>📋 Eventos registrados</h3>
+
+<p><b>Total eventos:</b> {{ eventos|length }}</p>
+
+<div class="table-container">
+
+<table>
+
+<tr>
+    <th>ID</th>
+    <th>Evento</th>
+    <th>Institución</th>
+    <th>Fecha</th>
+    <th>Total</th>
+    <th>M</th>
+    <th>H</th>
+    <th>Resultados</th>
+    <th>Acción</th>
+</tr>
+
+{% if eventos|length == 0 %}
+<tr>
+    <td colspan="9" style="text-align:center;">
+        No hay eventos registrados
+    </td>
+</tr>
+{% endif %}
+
+{% for e in eventos %}
+<tr>
+
+<form action="/editar_evento/{{e[0]}}" method="POST">
+
+    <td>{{e[0]}}</td>
+
+    <td><input type="text" name="nombre_evento" value="{{e[1]}}"></td>
+    <td><input type="text" name="institucion" value="{{e[2]}}"></td>
+    <td><input type="date" name="fecha" value="{{e[3]}}"></td>
+    <td><input type="number" name="participantes" value="{{e[4]}}"></td>
+    <td><input type="number" name="mujeres" value="{{e[5]}}"></td>
+    <td><input type="number" name="hombres" value="{{e[6]}}"></td>
+    <td><input type="text" name="resultados" value="{{e[7]}}"></td>
+
+    <td>
+        <button type="submit">💾</button>
+        <a href="/eliminar_evento/{{e[0]}}">
+            <button type="button" style="background:red;color:white;">❌</button>
+        </a>
+    </td>
+
+</form>
+
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+
+<br>
+
+<a href="/registrar_evento">
+    <button>➕ Nuevo evento</button>
+</a>
+
+
+
+<a href="/docente">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}

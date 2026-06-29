@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>📝 Evaluación del alumno</h3>
+
+<p><b>Evaluando:</b> {{alumno[1]}}</p>
+<p><b>Llevas:</b> {{index+1}} de {{total}}</p>
+
+<form method="POST" action="/guardar_evaluacion">
+
+<input type="hidden" name="matricula" value="{{alumno[0]}}">
+<input type="hidden" name="actividad" value="{{alumno[2]}}">
+<input type="hidden" name="index" value="{{index}}">
+
+<label>1. Cumple en tiempo y forma con las actividades encomendadas alcanzando los objetivos.</label>
+<select name="c1">
+    <option value="4">Excelente</option>
+    <option value="3">Notable</option>
+    <option value="2">Bueno</option>
+    <option value="1">Suficiente</option>
+    <option value="0" selected>Insuficiente</option>
+</select>
+<br><br>
+
+<label>2. Trabaja en equipo y se adapta a nuevas situaciones.</label>
+<select name="c2">
+    <option value="4">Excelente</option>
+    <option value="3">Notable</option>
+    <option value="2">Bueno</option>
+    <option value="1">Suficiente</option>
+    <option value="0" selected>Insuficiente</option>
+</select>
+<br><br>
+
+<label>3. Muestra liderazgo en las actividades encomendadas.</label>
+<select name="c3">
+    <option value="4">Excelente</option>
+    <option value="3">Notable</option>
+    <option value="2">Bueno</option>
+    <option value="1">Suficiente</option>
+    <option value="0" selected>Insuficiente</option>
+</select>
+<br><br>
+
+<label>4. Organiza su tiempo y trabaja de manera proactiva.</label>
+<select name="c4">
+    <option value="4">Excelente</option>
+    <option value="3">Notable</option>
+    <option value="2">Bueno</option>
+    <option value="1">Suficiente</option>
+    <option value="0" selected>Insuficiente</option>
+</select>
+<br><br>
+
+<label>5. Interpreta la realidad y se sensibiliza aportando soluciones a la problemática.</label>
+<select name="c5">
+    <option value="4">Excelente</option>
+    <option value="3">Notable</option>
+    <option value="2">Bueno</option>
+    <option value="1">Suficiente</option>
+    <option value="0" selected>Insuficiente</option>
+</select>
+<br><br>
+
+<label>6. Realiza sugerencias innovadoras para mejora del programa.</label>
+<select name="c6">
+    <option value="4">Excelente</option>
+    <option value="3">Notable</option>
+    <option value="2">Bueno</option>
+    <option value="1">Suficiente</option>
+    <option value="0" selected>Insuficiente</option>
+</select>
+<br><br>
+
+<label>7. Tiene iniciativa para ayudar y muestra espíritu de servicio.</label>
+<select name="c7">
+    <option value="4">Excelente</option>
+    <option value="3">Notable</option>
+    <option value="2">Bueno</option>
+    <option value="1">Suficiente</option>
+    <option value="0" selected>Insuficiente</option>
+</select>
+
+<br><br>
+
+<label>Observaciones:</label>
+<textarea name="observaciones"></textarea>
+
+<br><br>
+
+<button type="submit">💾 Guardar y siguiente ➡</button>
+
+</form>
+
+{% endblock %}

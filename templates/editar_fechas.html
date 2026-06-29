@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>✏️ Editar fechas de inscripción</h3>
+
+<form method="POST">
+
+    <label>Fecha inicio:</label><br>
+    <input type="date" name="inicio" value="{{datos[0]}}" required>
+
+    <br><br>
+
+    <label>Fecha fin:</label><br>
+    <input type="date" name="fin" value="{{datos[1]}}" required>
+
+    <br><br>
+
+    <button>💾 Actualizar</button>
+
+</form>
+
+<br>
+
+<a href="/admin">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}

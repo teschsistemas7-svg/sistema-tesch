@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>📊 Historial del alumno</h3>
+
+<form method="POST">
+    <input type="text" name="matricula" placeholder="Matrícula" required>
+    <button>🔍 Buscar</button>
+</form>
+
+<hr>
+
+{% if historial and historial|length > 0 %}
+
+<h4>✅ Créditos liberados: {{ creditos }}</h4>
+
+<table border="1" cellpadding="8" style="border-collapse:collapse; width:100%;">
+    <thead style="background:#eee;">
+        <tr>
+            <th>Periodo</th>
+            <th>Semestre</th>
+            <th>Actividad</th>
+            <th>Género</th>
+            <th>Teléfono</th>
+            <th>Resultado</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for h in historial %}
+        <tr>
+            <td>{{ h[0] }}</td>
+            <td>{{ h[1] }}</td>
+            <td>{{ h[2] }}</td>
+            <td>{{ h[3] }}</td>
+            <td>{{ h[4] }}</td>
+
+            <td>
+                {% if h[5] == "Acreditado" %}
+                    <span style="color:green; font-weight:bold;">✅ Acreditado</span>
+                {% elif h[5] == "No Acreditado" %}
+                    <span style="color:red;">❌ No acreditado</span>
+                {% else %}
+                    <span style="color:orange;">⚠ {{ h[5] }}</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+<p>🔎 No hay historial para este alumno.</p>
+{% endif %}
+
+<br>
+
+<a href="/admin">
+    <button>⬅ Volver al panel</button>
+</a>
+
+{% endblock %}

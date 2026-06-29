@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>📊 Reportes del sistema</h3>
+
+<!-- SELECTOR DE PERIODO -->
+<form method="POST">
+
+    <label>Seleccionar periodo:</label>
+
+    <select name="periodo" required>
+        {% for p in lista_periodos %}
+            <option value="{{p[0]}}"
+                {% if p[0] == periodo_seleccionado %}selected{% endif %}>
+                {{p[0]}}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button>🔍 Ver</button>
+
+</form>
+
+<hr>
+
+<h4>📅 Periodo seleccionado: {{periodo_seleccionado}}</h4>
+
+<hr>
+
+<h4>Total inscritos</h4>
+<p><b>{{total}}</b></p>
+
+<hr>
+
+<h4>🏀 Por taller</h4>
+{% for t in por_taller %}
+<p>{{t[0]}} → {{t[1]}}</p>
+{% endfor %}
+
+<hr>
+
+<h4>👥 Por género</h4>
+{% for g in por_genero %}
+<p>{{g[0]}} → {{g[1]}}</p>
+{% endfor %}
+
+<hr>
+
+<h4>🎓 Por semestre</h4>
+{% for s in por_semestre %}
+<p>Semestre {{s[0]}} → {{s[1]}}</p>
+{% endfor %}
+
+<hr>
+
+<h4>🏫 Por carrera</h4>
+{% for c in por_carrera %}
+<p>{{c[0]}} → {{c[1]}}</p>
+{% endfor %}
+
+<hr>
+
+<h4>📊 Género por taller</h4>
+{% for tg in por_taller_genero %}
+<p>{{tg[0]}} - {{tg[1]}} → {{tg[2]}}</p>
+{% endfor %}
+
+<br>
+
+<!-- ✅ BOTÓN VOLVER CORREGIDO -->
+<a href="/admin">
+    <button>⬅ Volver al panel</button>
+</a>
+
+{% endblock %}
