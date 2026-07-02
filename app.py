@@ -2,7 +2,7 @@ import os
 import psycopg2
 import pandas as pd
 from flask import Flask, render_template, request, redirect, session
-from datetime import datetime
+from datetime import datetime, timedelta
 from io import BytesIO
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -12,6 +12,22 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev_key")
+
+# Seguridad de sesión
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+
+# Expira sesión por inactividad
+app.permanent_session_lifetime = timedelta(minutes=5)
+
+@app.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
 
 # ======================
 # BASE DE DATOS
@@ -2007,6 +2023,8 @@ def login():
         # ✅ validar usuario y password
         if user and check_password_hash(user[0], password):
 
+            session.permanent = True
+
             session['usuario'] = usuario
             session['rol'] = user[1]
 
@@ -3095,6 +3113,24 @@ def nuevo_periodo():
 
 
 
+@app.route('/debug_eventos')
+def debug_eventos():
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT actividad, periodo
+    FROM eventos
+    """)
+
+    datos = cursor.fetchall()
+
+    conn.close()
+
+    return "<br>".join([str(x) for x in datos])
+
+
 
 
 
@@ -3104,7 +3140,13 @@ def nuevo_periodo():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect('/')
+
+    response = redirect('/')
+
+    response.set_cookie('session', '', expires=0)
+
+    return response
+
 
 init_db()
 cargar_datos()
