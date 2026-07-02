@@ -3182,6 +3182,36 @@ def reparar_talleres():
 
 
 
+@app.route('/arreglar_id_actividades')
+def arreglar_id_actividades():
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    CREATE SEQUENCE IF NOT EXISTS actividades_id_seq;
+    """)
+
+    cursor.execute("""
+    SELECT setval(
+        'actividades_id_seq',
+        COALESCE((SELECT MAX(id) FROM actividades), 1)
+    );
+    """)
+
+    cursor.execute("""
+    ALTER TABLE actividades
+    ALTER COLUMN id
+    SET DEFAULT nextval('actividades_id_seq');
+    """)
+
+    conn.commit()
+    conn.close()
+
+    return "✅ ID de actividades reparado"
+
+
+
 # ======================
 # LOGOUT
 # ======================
