@@ -2693,42 +2693,49 @@ def nuevo_taller():
 
     if request.method == 'POST':
 
-        nombre = request.form['nombre']
+        try:
 
-        if not nombre.strip():
-            mensaje = "❌ Debes escribir un nombre válido"
-            return render_template('nuevo_taller.html', mensaje=mensaje)
+            nombre = request.form['nombre']
 
-        nombre = nombre.strip().title()
+            if not nombre.strip():
+                mensaje = "❌ Debes escribir un nombre válido"
+                return render_template('nuevo_taller.html', mensaje=mensaje)
 
-        conn = get_db()
-        cursor = conn.cursor()
+            nombre = nombre.strip().title()
 
-        cursor.execute("""
-            SELECT * FROM actividades 
-            WHERE LOWER(nombre) = LOWER(%s)
-        """, (nombre,))
-        
-        if cursor.fetchone():
+            conn = get_db()
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                SELECT * FROM actividades
+                WHERE LOWER(nombre) = LOWER(%s)
+            """, (nombre,))
+
+            if cursor.fetchone():
+                conn.close()
+                mensaje = "❌ El taller ya existe"
+                return render_template('nuevo_taller.html', mensaje=mensaje)
+
+            docente = session['usuario']
+
+            cursor.execute("""
+            INSERT INTO actividades (nombre, docente)
+            VALUES (%s, %s)
+            """, (nombre, docente))
+
+            conn.commit()
             conn.close()
-            mensaje = "❌ El taller ya existe"
+
+            mensaje = "✅ Taller registrado correctamente"
+
             return render_template('nuevo_taller.html', mensaje=mensaje)
 
-        # ✅ 👇 AQUÍ VA LA CORRECCIÓN IMPORTANTE
-        docente = session['usuario']
-
-        cursor.execute("""
-        INSERT INTO actividades (nombre, docente)
-        VALUES (%s, %s)
-        """, (nombre, docente))
-
-        conn.commit()
-        conn.close()
-
-        mensaje = "✅ Taller registrado correctamente"
-        return render_template('nuevo_taller.html', mensaje=mensaje)
+        except Exception as e:
+            return f"ERROR: {e}"
 
     return render_template('nuevo_taller.html')
+
+
 
 
 # ======================
