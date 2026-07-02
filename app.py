@@ -800,15 +800,16 @@ def cargar_inscripciones_excel():
         archivo = request.files.get('archivo')
 
         if not archivo or archivo.filename == '':
-            return render_template("cargar_excel.html", mensaje="❌ Archivo no válido")
+            return render_template(
+                "cargar_excel.html",
+                mensaje="❌ Archivo no válido"
+            )
 
         try:
+
             df = pd.read_excel(archivo)
 
-            # ✅ normalizar columnas
             df.columns = df.columns.str.strip().str.lower()
-
-            # ✅ limpiar texto raro
             df = df.replace(r'&nbsp;|°', '', regex=True)
 
             conn = get_db()
@@ -821,6 +822,7 @@ def cargar_inscripciones_excel():
             for i, row in df.iterrows():
 
                 try:
+
                     matricula = str(row.get('matricula', '')).strip()
                     nombre = str(row.get('nombre', '')).strip()
                     carrera = str(row.get('carrera', '')).strip()
@@ -830,63 +832,109 @@ def cargar_inscripciones_excel():
                     actividad = str(row.get('actividad', '')).strip()
                     periodo = str(row.get('periodo', '')).strip()
 
-                    # ✅ validación básica
+                    # Validación básica
                     if not matricula or not actividad or not periodo:
                         errores += 1
                         continue
 
-                    # ✅ insertar alumno si no existe
-                    cursor.execute("SELECT 1 FROM alumnos WHERE matricula=%s", (matricula,))
+                    # Verificar que exista el taller
+                    cursor.execute("""
+                        SELECT 1
+                        FROM actividades
+                        WHERE LOWER(nombre)=LOWER(%s)
+                    """, (actividad,))
+
                     if not cursor.fetchone():
+                        print(f"❌ Taller no existe: {actividad}")
+                        errores += 1
+                        continue
+
+                    # Crear alumno si no existe
+                    cursor.execute("""
+                        SELECT 1
+                        FROM alumnos
+                        WHERE matricula=%s
+                    """, (matricula,))
+
+                    if not cursor.fetchone():
+
                         cursor.execute("""
-                            INSERT INTO alumnos (matricula, nombre, carrera)
-                            VALUES (%s, %s, %s)
+                            INSERT INTO alumnos
+                            (matricula, nombre, carrera)
+                            VALUES (%s,%s,%s)
                         """, (matricula, nombre, carrera))
 
-                    # ✅ insertar usuario con HASH 🔐
-                    cursor.execute("SELECT 1 FROM usuarios WHERE usuario=%s", (matricula,))
+                    # Crear usuario si no existe
+                    cursor.execute("""
+                        SELECT 1
+                        FROM usuarios
+                        WHERE usuario=%s
+                    """, (matricula,))
+
                     if not cursor.fetchone():
+
                         password_hash = generate_password_hash(matricula)
 
                         cursor.execute("""
-                            INSERT INTO usuarios (usuario, password, rol, cambio_password)
-                            VALUES (%s, %s, 'alumno', 0)
+                            INSERT INTO usuarios
+                            (usuario,password,rol,cambio_password)
+                            VALUES (%s,%s,'alumno',0)
                         """, (matricula, password_hash))
 
-                    # ✅ validar duplicado de inscripción
+                    # Verificar inscripción
                     cursor.execute("""
-                        SELECT 1 FROM inscripciones
-                        WHERE matricula=%s AND actividad=%s AND periodo=%s
-                    """, (matricula, actividad, periodo))
+                        SELECT 1
+                        FROM inscripciones
+                        WHERE matricula=%s
+                        AND periodo=%s
+                    """, (matricula, periodo))
 
-                    if not cursor.fetchone():
-                        cursor.execute("""
-                            INSERT INTO inscripciones
-                            (matricula, semestre, genero, telefono, actividad, periodo)
-                            VALUES (%s,%s,%s,%s,%s,%s)
-                        """, (matricula, semestre, genero, telefono, actividad, periodo))
-
-                        insertados += 1
-                    else:
+                    if cursor.fetchone():
                         duplicados += 1
+                        continue
+
+                    # Insertar inscripción
+                    cursor.execute("""
+                        INSERT INTO inscripciones
+                        (matricula, semestre, genero,
+                         telefono, actividad, periodo)
+                        VALUES (%s,%s,%s,%s,%s,%s)
+                    """, (
+                        matricula,
+                        semestre,
+                        genero,
+                        telefono,
+                        actividad,
+                        periodo
+                    ))
+
+                    insertados += 1
 
                 except Exception as e:
-                    print(f"❌ Error fila {i}: {e}")
+
+                    conn.rollback()
+
+                    print(f"❌ Error fila {i+1}: {e}")
+
                     errores += 1
 
             conn.commit()
             conn.close()
 
             mensaje = f"""
-✅ Insertados: {insertados}
-⚠️ Duplicados: {duplicados}
+✅ Insertados: {insertados}<br>
+⚠️ Duplicados: {duplicados}<br>
 ❌ Errores: {errores}
 """
 
         except Exception as e:
+
             mensaje = f"❌ Error general: {str(e)}"
 
-        return render_template("cargar_excel.html", mensaje=mensaje)
+        return render_template(
+            "cargar_excel.html",
+            mensaje=mensaje
+        )
 
     return render_template("cargar_excel.html")
 
@@ -3161,24 +3209,7 @@ def debug_talleres():
     return str(datos)
 
 
-@app.route('/reparar_talleres')
-def reparar_talleres():
 
-    conn = get_db()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-    SELECT setval(
-        pg_get_serial_sequence('actividades', 'id'),
-        COALESCE(MAX(id), 1)
-    )
-    FROM actividades;
-    """)
-
-    conn.commit()
-    conn.close()
-
-    return "✅ Secuencia reparada"
 
 
 
