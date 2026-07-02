@@ -3161,6 +3161,26 @@ def debug_talleres():
     return str(datos)
 
 
+@app.route('/reparar_talleres')
+def reparar_talleres():
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT setval(
+        pg_get_serial_sequence('actividades', 'id'),
+        COALESCE(MAX(id), 1)
+    )
+    FROM actividades;
+    """)
+
+    conn.commit()
+    conn.close()
+
+    return "✅ Secuencia reparada"
+
+
 
 # ======================
 # LOGOUT
