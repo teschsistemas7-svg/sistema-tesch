@@ -1679,7 +1679,24 @@ def mostrar_registro_evento():
     if session.get('rol') != 'docente':
         return "Acceso denegado"
 
-    return render_template('registrar_evento.html')
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT nombre
+    FROM actividades
+    WHERE docente=%s
+    ORDER BY nombre
+    """, (session['usuario'],))
+
+    talleres = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        'registrar_evento.html',
+        talleres=talleres
+    )
 
 
 

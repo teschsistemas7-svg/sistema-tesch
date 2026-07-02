@@ -8,7 +8,17 @@
 
     <!-- ✅ ACTIVIDAD (CLAVE PARA TODO EL SISTEMA) -->
     <label>Actividad / Taller:</label>
-    <input type="text" name="actividad" placeholder="Ej. Fútbol Varonil" required>
+    <select name="actividad" required class="form-control">
+    <option value="">
+        Seleccione un taller
+    </option>
+
+    {% for taller in talleres %}
+        <option value="{{ taller[0] }}">
+            {{ taller[0] }}
+        </option>
+    {% endfor %}
+</select>
 
     <label>Nombre del Evento:</label>
     <input type="text" name="nombre_evento" required>
