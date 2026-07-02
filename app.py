@@ -1181,6 +1181,7 @@ def evaluacion(index):
         SELECT nombre FROM actividades WHERE docente=%s
     )
     AND inscripciones.periodo=%s
+    ORDER BY alumnos.nombre ASC
     """, (docente, periodo))
 
     lista = cursor.fetchall()
@@ -1574,7 +1575,9 @@ def acreditacion():
         AND resultados.periodo = inscripciones.periodo
     WHERE inscripciones.actividad = %s
     AND inscripciones.periodo = %s
+    ORDER BY alumnos.nombre ASC
     """, (taller, periodo))
+
 
     alumnos = cursor.fetchall()
 
