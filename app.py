@@ -3140,39 +3140,25 @@ def nuevo_periodo():
 
 
 
-@app.route('/debug_eventos')
-def debug_eventos():
+
+
+
+
+@app.route('/debug_talleres')
+def debug_talleres():
 
     conn = get_db()
     cursor = conn.cursor()
 
     cursor.execute("""
-    SELECT actividad, periodo
-    FROM eventos
+    SELECT * FROM actividades
     """)
 
     datos = cursor.fetchall()
 
     conn.close()
 
-    return "<br>".join([str(x) for x in datos])
-
-@app.route('/corregir_eventos')
-def corregir_eventos():
-
-    conn = get_db()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-    UPDATE eventos
-    SET actividad='Fútbol varonil'
-    WHERE actividad='Fùtbol varonil'
-    """)
-
-    conn.commit()
-    conn.close()
-
-    return "Corregido"
+    return str(datos)
 
 
 
