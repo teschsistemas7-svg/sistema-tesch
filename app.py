@@ -3130,7 +3130,22 @@ def debug_eventos():
 
     return "<br>".join([str(x) for x in datos])
 
+@app.route('/corregir_eventos')
+def corregir_eventos():
 
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    UPDATE eventos
+    SET actividad='Fútbol varonil'
+    WHERE actividad='Fùtbol varonil'
+    """)
+
+    conn.commit()
+    conn.close()
+
+    return "Corregido"
 
 
 
