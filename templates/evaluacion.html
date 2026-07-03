@@ -91,6 +91,12 @@
 
 <button type="submit">💾 Guardar y siguiente ➡</button>
 
+{% if taller_seleccionado %}
+    <a href="/acreditacion?taller={{ taller_seleccionado|urlencode }}">
+        <button>✅ Acreditar alumnos</button>
+    </a>
+
+
 </form>
 
 {% endblock %}
