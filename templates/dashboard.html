@@ -30,7 +30,7 @@
 
 <hr>
 
-<h3>📋 Alumnos por taller</h3>
+<h3>📋 Estudiantes por taller</h3>
 
 <div class="table-container">
 
@@ -49,11 +49,10 @@
     {% for t in por_taller %}
     <tr>
         <td>{{ t[0] }}</td>
-
         <td>{{ t[1] }}</td>
 
         <td>
-            /detalle_taller/{{ t[0] }}
+            <a href="/detalle_taller/{{ t[0] }}">
                 <button type="button">
                     👁 Ver alumnos
                 </button>
@@ -71,7 +70,9 @@
 <br>
 
 <a href="/admin">
-    <button type="button">⬅ Volver</button>
+    <button type="button">
+        ⬅ Volver
+    </button>
 </a>
 
 {% endblock %}
