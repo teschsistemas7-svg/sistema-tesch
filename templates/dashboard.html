@@ -7,22 +7,22 @@
 <div style="display:flex; gap:20px; flex-wrap:wrap;">
 
     <div style="background:#800000; color:white; padding:20px; border-radius:10px;">
-        <h3>{{total_alumnos}}</h3>
+        <h3>{{ total_alumnos }}</h3>
         <p>Alumnos inscritos</p>
     </div>
 
     <div style="background:#0066cc; color:white; padding:20px; border-radius:10px;">
-        <h3>{{total_talleres}}</h3>
+        <h3>{{ total_talleres }}</h3>
         <p>Talleres</p>
     </div>
 
     <div style="background:green; color:white; padding:20px; border-radius:10px;">
-        <h3>{{total_docentes}}</h3>
+        <h3>{{ total_docentes }}</h3>
         <p>Docentes</p>
     </div>
 
     <div style="background:#444; color:white; padding:20px; border-radius:10px;">
-        <h3>{{periodo}}</h3>
+        <h3>{{ periodo }}</h3>
         <p>Periodo activo</p>
     </div>
 
@@ -33,27 +33,45 @@
 <h3>📋 Alumnos por taller</h3>
 
 <div class="table-container">
-<table>
 
-<tr>
-    <th>Taller</th>
-    <th>Total alumnos</th>
-</tr>
+<table class="table table-striped table-bordered">
 
-{% for t in por_taller %}
-<tr>
-    <td>{{t[0]}}</td>
-    <td>{{t[1]}}</td>
-</tr>
-{% endfor %}
+    <thead>
+        <tr>
+            <th>Taller</th>
+            <th>Total alumnos</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for t in por_taller %}
+    <tr>
+        <td>{{ t[0] }}</td>
+
+        <td>{{ t[1] }}</td>
+
+        <td>
+            /detalle_taller/{{ t[0] }}
+                <button type="button">
+                    👁 Ver alumnos
+                </button>
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+
+    </tbody>
 
 </table>
+
 </div>
 
 <br>
 
 <a href="/admin">
-<button>⬅ Volver</button>
+    <button type="button">⬅ Volver</button>
 </a>
 
 {% endblock %}

@@ -3222,54 +3222,66 @@ def nuevo_periodo():
 
 
 
-@app.route('/debug_talleres')
-def debug_talleres():
+
+@app.route('/detalle_taller/<actividad>')
+def detalle_taller(actividad):
+
+    if session.get('rol') != 'admin':
+        return "Acceso denegado"
 
     conn = get_db()
     cursor = conn.cursor()
 
+    # periodo activo
     cursor.execute("""
-    SELECT * FROM actividades
+    SELECT periodo
+    FROM periodos
+    WHERE activo=1
     """)
+    periodo = cursor.fetchone()[0]
 
-    datos = cursor.fetchall()
+    # docente del taller
+    cursor.execute("""
+    SELECT docente
+    FROM actividades
+    WHERE nombre=%s
+    """, (actividad,))
+
+    dato_docente = cursor.fetchone()
+    docente = dato_docente[0] if dato_docente else "Sin asignar"
+
+    # alumnos inscritos
+    cursor.execute("""
+    SELECT a.matricula,
+           a.nombre,
+           a.carrera,
+           i.semestre,
+           i.genero
+    FROM inscripciones i
+    JOIN alumnos a
+        ON a.matricula = i.matricula
+    WHERE i.actividad=%s
+      AND i.periodo=%s
+    ORDER BY a.nombre
+    """, (actividad, periodo))
+
+    alumnos = cursor.fetchall()
 
     conn.close()
 
-    return str(datos)
+    return render_template(
+        "detalle_taller.html",
+        actividad=actividad,
+        docente=docente,
+        periodo=periodo,
+        alumnos=alumnos
+    )
 
 
 
 
 
 
-@app.route('/arreglar_id_actividades')
-def arreglar_id_actividades():
-
-    conn = get_db()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-    CREATE SEQUENCE IF NOT EXISTS actividades_id_seq;
-    """)
-
-    cursor.execute("""
-    SELECT setval(
-        'actividades_id_seq',
-        COALESCE((SELECT MAX(id) FROM actividades), 1)
-    );
-    """)
-
-    cursor.execute("""
-    ALTER TABLE actividades
-    ALTER COLUMN id
-    SET DEFAULT nextval('actividades_id_seq');
-    """)
-
-    conn.commit()
-    conn.close()
-
-    return "✅ ID de actividades reparado"
 
 
 

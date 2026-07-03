@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<h3>📚 Detalle del Taller</h3>
+
+<p><b>Taller:</b> {{ actividad }}</p>
+
+<p><b>Docente:</b> {{ docente }}</p>
+
+<p><b>Periodo:</b> {{ periodo }}</p>
+
+<hr>
+
+<h4>Alumnos inscritos ({{ alumnos|length }})</h4>
+
+<table class="table table-bordered table-striped">
+
+    <tr>
+        <th>Matrícula</th>
+        <th>Nombre</th>
+        <th>Carrera</th>
+        <th>Semestre</th>
+        <th>Género</th>
+    </tr>
+
+    {% for a in alumnos %}
+    <tr>
+        <td>{{ a[0] }}</td>
+        <td>{{ a[1] }}</td>
+        <td>{{ a[2] }}</td>
+        <td>{{ a[3] }}</td>
+        <td>{{ a[4] }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+">
+    <button>⬅ Volver</button>
+</a>
+
+{% endblock %}
