@@ -3010,18 +3010,25 @@ def reportes():
         cursor.execute("SELECT periodo FROM periodos WHERE activo=1")
         periodo_seleccionado = cursor.fetchone()[0]
 
-    # ✅ CONSULTAS FILTRADAS
-    cursor.execute("SELECT COUNT(*) FROM inscripciones WHERE periodo=%s", (periodo_seleccionado,))
+    # ✅ Total inscritos
+    cursor.execute("""
+    SELECT COUNT(*)
+    FROM inscripciones
+    WHERE periodo=%s
+    """, (periodo_seleccionado,))
     total = cursor.fetchone()[0]
 
+    # ✅ Por taller
     cursor.execute("""
     SELECT actividad, COUNT(*) 
     FROM inscripciones
     WHERE periodo=%s
     GROUP BY actividad
+    ORDER BY actividad
     """, (periodo_seleccionado,))
     por_taller = cursor.fetchall()
 
+    # ✅ Por género
     cursor.execute("""
     SELECT genero, COUNT(*) 
     FROM inscripciones
@@ -3030,40 +3037,63 @@ def reportes():
     """, (periodo_seleccionado,))
     por_genero = cursor.fetchall()
 
+    # ✅ Por semestre
     cursor.execute("""
     SELECT semestre, COUNT(*) 
     FROM inscripciones
     WHERE periodo=%s
     GROUP BY semestre
+    ORDER BY semestre
     """, (periodo_seleccionado,))
     por_semestre = cursor.fetchall()
 
+    # ✅ Por carrera
     cursor.execute("""
     SELECT alumnos.carrera, COUNT(*) 
     FROM inscripciones
     JOIN alumnos ON alumnos.matricula = inscripciones.matricula
     WHERE periodo=%s
     GROUP BY alumnos.carrera
+    ORDER BY alumnos.carrera
     """, (periodo_seleccionado,))
     por_carrera = cursor.fetchall()
 
+    # ✅ Taller por género
     cursor.execute("""
     SELECT actividad, genero, COUNT(*) 
     FROM inscripciones
     WHERE periodo=%s
     GROUP BY actividad, genero
+    ORDER BY actividad, genero
     """, (periodo_seleccionado,))
     por_taller_genero = cursor.fetchall()
 
+    # ✅ NUEVO: Hombres y mujeres por taller y semestre
+    cursor.execute("""
+    SELECT
+        actividad,
+        semestre,
+        SUM(CASE WHEN UPPER(genero)='HOMBRE' THEN 1 ELSE 0 END) AS hombres,
+        SUM(CASE WHEN UPPER(genero)='MUJER' THEN 1 ELSE 0 END) AS mujeres,
+        COUNT(*) AS total
+    FROM inscripciones
+    WHERE periodo=%s
+    GROUP BY actividad, semestre
+    ORDER BY actividad, semestre
+    """, (periodo_seleccionado,))
+    por_taller_semestre = cursor.fetchall()
+
     conn.close()
 
-    return render_template("reportes.html",
+    return render_template(
+        "reportes.html",
         total=total,
         por_taller=por_taller,
         por_genero=por_genero,
         por_semestre=por_semestre,
         por_carrera=por_carrera,
         por_taller_genero=por_taller_genero,
+        por_taller_semestre=por_taller_semestre,
         lista_periodos=lista_periodos,
         periodo_seleccionado=periodo_seleccionado
     )

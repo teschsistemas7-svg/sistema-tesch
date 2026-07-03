@@ -11,66 +11,100 @@
 
     <select name="periodo" required>
         {% for p in lista_periodos %}
-            <option value="{{p[0]}}"
+            <option value="{{ p[0] }}"
                 {% if p[0] == periodo_seleccionado %}selected{% endif %}>
-                {{p[0]}}
+                {{ p[0] }}
             </option>
         {% endfor %}
     </select>
 
-    <button>🔍 Ver</button>
+    <button type="submit">🔍 Ver</button>
 
 </form>
 
 <hr>
 
-<h4>📅 Periodo seleccionado: {{periodo_seleccionado}}</h4>
+<h4>📅 Periodo seleccionado: {{ periodo_seleccionado }}</h4>
 
 <hr>
 
 <h4>Total inscritos</h4>
-<p><b>{{total}}</b></p>
+<p><b>{{ total }}</b></p>
 
 <hr>
 
 <h4>🏀 Por taller</h4>
 {% for t in por_taller %}
-<p>{{t[0]}} → {{t[1]}}</p>
+    <p>{{ t[0] }} → {{ t[1] }}</p>
 {% endfor %}
 
 <hr>
 
 <h4>👥 Por género</h4>
 {% for g in por_genero %}
-<p>{{g[0]}} → {{g[1]}}</p>
+    <p>{{ g[0] }} → {{ g[1] }}</p>
 {% endfor %}
 
 <hr>
 
 <h4>🎓 Por semestre</h4>
 {% for s in por_semestre %}
-<p>Semestre {{s[0]}} → {{s[1]}}</p>
+    <p>Semestre {{ s[0] }} → {{ s[1] }}</p>
 {% endfor %}
 
 <hr>
 
 <h4>🏫 Por carrera</h4>
 {% for c in por_carrera %}
-<p>{{c[0]}} → {{c[1]}}</p>
+    <p>{{ c[0] }} → {{ c[1] }}</p>
 {% endfor %}
 
 <hr>
 
 <h4>📊 Género por taller</h4>
 {% for tg in por_taller_genero %}
-<p>{{tg[0]}} - {{tg[1]}} → {{tg[2]}}</p>
+    <p>{{ tg[0] }} - {{ tg[1] }} → {{ tg[2] }}</p>
 {% endfor %}
+
+<hr>
+
+<h4>📋 Hombres y Mujeres por Taller y Semestre</h4>
+
+{% if por_taller_semestre %}
+
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Taller</th>
+            <th>Semestre</th>
+            <th>👨 Hombres</th>
+            <th>👩 Mujeres</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for fila in por_taller_semestre %}
+        <tr>
+            <td>{{ fila[0] }}</td>
+            <td>{{ fila[1] }}</td>
+            <td>{{ fila[2] }}</td>
+            <td>{{ fila[3] }}</td>
+            <td><strong>{{ fila[4] }}</strong></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+
+<p>No hay registros para mostrar.</p>
+
+{% endif %}
 
 <br>
 
-<!-- ✅ BOTÓN VOLVER CORREGIDO -->
 <a href="/admin">
-    <button>⬅ Volver al panel</button>
+    <button type="button">⬅ Volver al panel</button>
 </a>
 
 {% endblock %}
