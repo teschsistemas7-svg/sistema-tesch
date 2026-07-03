@@ -2,20 +2,14 @@
 
 {% block contenido %}
 
-<h3>📚 Detalle del Taller</h3>
-
-<p><b>Taller:</b> {{ actividad }}</p>
+<h2>📚 {{ actividad }}</h2>
 
 <p><b>Docente:</b> {{ docente }}</p>
-
 <p><b>Periodo:</b> {{ periodo }}</p>
 
 <hr>
 
-<h4>Alumnos inscritos ({{ alumnos|length }})</h4>
-
-<table class="table table-bordered table-striped">
-
+<table>
     <tr>
         <th>Matrícula</th>
         <th>Nombre</th>
@@ -36,7 +30,9 @@
 
 </table>
 
-">
+<br>
+
+dashboard">
     <button>⬅ Volver</button>
 </a>
 
