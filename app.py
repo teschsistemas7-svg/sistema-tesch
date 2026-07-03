@@ -3238,9 +3238,16 @@ def detalle_taller(actividad):
     FROM periodos
     WHERE activo=1
     """)
-    periodo = cursor.fetchone()[0]
 
-    # docente del taller
+    dato = cursor.fetchone()
+
+    if not dato:
+        conn.close()
+        return "❌ No hay periodo activo"
+
+    periodo = dato[0]
+
+    # docente asignado
     cursor.execute("""
     SELECT docente
     FROM actividades
@@ -3252,14 +3259,15 @@ def detalle_taller(actividad):
 
     # alumnos inscritos
     cursor.execute("""
-    SELECT a.matricula,
-           a.nombre,
-           a.carrera,
-           i.semestre,
-           i.genero
+    SELECT
+        a.matricula,
+        a.nombre,
+        a.carrera,
+        i.semestre,
+        i.genero
     FROM inscripciones i
     JOIN alumnos a
-        ON a.matricula = i.matricula
+        ON a.matricula=i.matricula
     WHERE i.actividad=%s
       AND i.periodo=%s
     ORDER BY a.nombre
