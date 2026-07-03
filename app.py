@@ -2679,34 +2679,60 @@ def dashboard():
     conn = get_db()
     cursor = conn.cursor()
 
-    # ✅ Total alumnos
-    cursor.execute("SELECT COUNT(*) FROM inscripciones")
+    # ✅ Obtener periodo activo
+    cursor.execute("""
+    SELECT periodo
+    FROM periodos
+    WHERE activo=1
+    """)
+
+    dato = cursor.fetchone()
+    periodo = dato[0] if dato else "No activo"
+
+    # ✅ Total alumnos SOLO del periodo activo
+    cursor.execute("""
+    SELECT COUNT(*)
+    FROM inscripciones
+    WHERE periodo=%s
+    """, (periodo,))
+
     total_alumnos = cursor.fetchone()[0]
 
     # ✅ Total talleres
-    cursor.execute("SELECT COUNT(*) FROM actividades")
+    cursor.execute("""
+    SELECT COUNT(*)
+    FROM actividades
+    """)
+
     total_talleres = cursor.fetchone()[0]
 
     # ✅ Total docentes
-    cursor.execute("SELECT COUNT(*) FROM usuarios WHERE rol='docente'")
+    cursor.execute("""
+    SELECT COUNT(*)
+    FROM usuarios
+    WHERE rol='docente'
+    """)
+
     total_docentes = cursor.fetchone()[0]
 
-    # ✅ Periodo activo
-    cursor.execute("SELECT periodo FROM periodos WHERE activo=1")
-    periodo = cursor.fetchone()
-    periodo = periodo[0] if periodo else "No activo"
-
-    # ✅ Alumnos por taller
+    # ✅ Alumnos por taller SOLO del periodo activo
     cursor.execute("""
-    SELECT actividad, COUNT(*) 
-    FROM inscripciones
-    GROUP BY actividad
-    """)
+    SELECT a.nombre,
+           COUNT(i.id) AS total
+    FROM actividades a
+    LEFT JOIN inscripciones i
+        ON a.nombre = i.actividad
+        AND i.periodo = %s
+    GROUP BY a.nombre
+    ORDER BY a.nombre
+    """, (periodo,))
+
     por_taller = cursor.fetchall()
 
     conn.close()
 
-    return render_template('dashboard.html',
+    return render_template(
+        'dashboard.html',
         total_alumnos=total_alumnos,
         total_talleres=total_talleres,
         total_docentes=total_docentes,
