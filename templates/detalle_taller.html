@@ -9,31 +9,70 @@
 
 <hr>
 
-<table>
-    <tr>
-        <th>Matrícula</th>
-        <th>Nombre</th>
-        <th>Carrera</th>
-        <th>Semestre</th>
-        <th>Género</th>
-    </tr>
+<h3>📂 Formatos disponibles</h3>
 
+<div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px;">
+
+    /exportar_word/{{ actividad|urlencode }}
+        <button type="button">📋 Lista de alumnos</button>
+    </a>
+
+    /exportar_resultados/{{ actividad|urlencode }}
+        <button type="button">📊 Formato 3</button>
+    </a>
+
+    /exportar_todos_formato4/{{ actividad|urlencode }}
+        <button type="button">📝 Formato 4</button>
+    </a>
+
+    /exportar_constancias_todos/{{ actividad|urlencode }}/01
+        <button type="button">🏅 Constancias 05-01</button>
+    </a>
+
+    /exportar_constancias_todos/{{ actividad|urlencode }}/02
+        <button type="button">🎖 Constancias 05-02</button>
+    </a>
+
+    /exportar_informe/{{ actividad|urlencode }}
+        <button type="button">📄 Informe Final</button>
+    </a>
+
+</div>
+
+<hr>
+
+<h3>👨‍🎓 Alumnos inscritos ({{ alumnos|length }})</h3>
+
+<table border="1" cellpadding="8" style="border-collapse:collapse; width:100%;">
+
+    <thead style="background:#800000; color:white;">
+        <tr>
+            <th>Matrícula</th>
+            <th>Nombre</th>
+            <th>Carrera</th>
+            <th>Semestre</th>
+            <th>Género</th>
+        </tr>
+    </thead>
+
+    <tbody>
     {% for a in alumnos %}
-    <tr>
-        <td>{{ a[0] }}</td>
-        <td>{{ a[1] }}</td>
-        <td>{{ a[2] }}</td>
-        <td>{{ a[3] }}</td>
-        <td>{{ a[4] }}</td>
-    </tr>
+        <tr>
+            <td>{{ a[0] }}</td>
+            <td>{{ a[1] }}</td>
+            <td>{{ a[2] }}</td>
+            <td>{{ a[3] }}</td>
+            <td>{{ a[4] }}</td>
+        </tr>
     {% endfor %}
+    </tbody>
 
 </table>
 
 <br>
 
-<a href="/dashboard">
-    <button>⬅ Volver</button>
+/dashboard
+    <button type="button">⬅ Volver al Dashboard</button>
 </a>
 
 {% endblock %}
