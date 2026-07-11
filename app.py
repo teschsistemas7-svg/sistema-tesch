@@ -2626,12 +2626,24 @@ def historial_admin():
 
     historial = []
     matricula = ""
-    creditos = 0  # ✅ contador
+    creditos = 0
+
+    alumno = None
 
     if request.method == 'POST':
 
-        matricula = request.form['matricula']
+        matricula = request.form['matricula'].strip()
 
+        # ✅ Datos generales del alumno
+        cursor.execute("""
+        SELECT matricula, nombre, carrera
+        FROM alumnos
+        WHERE matricula=%s
+        """, (matricula,))
+
+        alumno = cursor.fetchone()
+
+        # ✅ Historial completo de todos los periodos
         cursor.execute("""
         SELECT 
             inscripciones.periodo,
@@ -2651,8 +2663,11 @@ def historial_admin():
 
         historial = cursor.fetchall()
 
-        # ✅ contar créditos liberados
-        creditos = sum(1 for h in historial if h[5] == "Acreditado")
+        # ✅ Créditos acreditados
+        creditos = sum(
+            1 for h in historial
+            if str(h[5]).strip().lower() == "acreditado"
+        )
 
     conn.close()
 
@@ -2660,6 +2675,7 @@ def historial_admin():
         'historial_admin.html',
         historial=historial,
         matricula=matricula,
+        alumno=alumno,
         creditos=creditos
     )
 
