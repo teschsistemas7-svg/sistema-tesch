@@ -6,14 +6,44 @@
 
 <form method="POST">
     <input type="text" name="matricula" placeholder="Matrícula" required>
-    <button>🔍 Buscar</button>
+    <button type="submit">🔍 Buscar</button>
 </form>
 
 <hr>
 
+{% if alumno %}
+
+<h4>🎓 Información del estudiante</h4>
+
+<table border="1" cellpadding="8" style="border-collapse:collapse;">
+    <tr>
+        <th>Matrícula</th>
+        <td>{{ alumno[0] }}</td>
+    </tr>
+
+    <tr>
+        <th>Nombre</th>
+        <td>{{ alumno[1] }}</td>
+    </tr>
+
+    <tr>
+        <th>Carrera</th>
+        <td>{{ alumno[2] }}</td>
+    </tr>
+
+    <tr>
+        <th>Créditos liberados</th>
+        <td><b>{{ creditos }}</b></td>
+    </tr>
+</table>
+
+<br>
+
+{% endif %}
+
 {% if historial and historial|length > 0 %}
 
-<h4>✅ Créditos liberados: {{ creditos }}</h4>
+<h4>📚 Historial completo de actividades</h4>
 
 <table border="1" cellpadding="8" style="border-collapse:collapse; width:100%;">
     <thead style="background:#eee;">
@@ -38,11 +68,19 @@
 
             <td>
                 {% if h[5] == "Acreditado" %}
-                    <span style="color:green; font-weight:bold;">✅ Acreditado</span>
+                    <span style="color:green; font-weight:bold;">
+                        ✅ Acreditado
+                    </span>
+
                 {% elif h[5] == "No Acreditado" %}
-                    <span style="color:red;">❌ No acreditado</span>
+                    <span style="color:red; font-weight:bold;">
+                        ❌ No acreditado
+                    </span>
+
                 {% else %}
-                    <span style="color:orange;">⚠ {{ h[5] }}</span>
+                    <span style="color:orange;">
+                        ⚠ {{ h[5] }}
+                    </span>
                 {% endif %}
             </td>
         </tr>
@@ -50,14 +88,20 @@
     </tbody>
 </table>
 
-{% else %}
-<p>🔎 No hay historial para este alumno.</p>
+{% elif matricula %}
+
+<p style="color:red;">
+    ❌ No se encontró historial para la matrícula ingresada.
+</p>
+
 {% endif %}
 
 <br>
 
 <a href="/admin">
-    <button>⬅ Volver al panel</button>
+    <button type="button">
+        ⬅ Volver al panel
+    </button>
 </a>
 
 {% endblock %}
